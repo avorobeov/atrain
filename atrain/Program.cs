@@ -113,7 +113,12 @@ namespace atrain
 
         public void TrainDispatch(Atrain atrain)
         {
-            atrain.StartMoving();
+            if (_startingPoint != null && _endPoint != null && _numberWagons != 0)
+            {
+                atrain.StartMoving();
+            }
+
+            ShowMessage("\nПоезд не готов к отправке\n", ConsoleColor.Red);
         }
 
         private void ShowMessage(string message, ConsoleColor color)
