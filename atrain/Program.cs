@@ -11,7 +11,6 @@ namespace atrain
         static void Main(string[] args)
         {
             Dispatcher dispatcher = new Dispatcher();
-            Train train = null;
 
             string userInput;
             bool isExit = false;
@@ -25,15 +24,15 @@ namespace atrain
                 switch (userInput)
                 {
                     case "1":
-                        dispatcher.CreateDirection();
+                        dispatcher.ToCreateDirection();
                         break;
 
                     case "2":
-                        dispatcher.PreparingTrainDeparture(out train);
+                        dispatcher.ToPrepareTrain();
                         break;
 
                     case "3":
-                        dispatcher.TrainDispatch(train);
+                        dispatcher.ToSendTrain();
                         break;
 
                     case "4":
@@ -60,28 +59,38 @@ namespace atrain
 
         public int NumberWagons { get; private set; }
 
+        public int TrainNumber { get; private set; }
+
+        private int maximumRandomNumber = 100000;
+
         public Train(string startingPoint, string endPoint, int numberWagons)
         {
+            Random random = new Random();
+
             StartingPoint = startingPoint;
             EndPoint = endPoint;
             NumberWagons = numberWagons;
+
+            TrainNumber = random.Next(0, maximumRandomNumber);
         }
 
         public void StartMoving()
         {
-            Console.WriteLine("Поезд начал движение", ConsoleColor.Red);
+            Console.WriteLine($"\nНомер  поезда [{TrainNumber}]\nПоезд начал движение", ConsoleColor.Red);
         }
     }
 
     class Dispatcher
     {
+        private List<Train> _trains = new List<Train>();
+
         private string _startingPoint;
         private string _endPoint;
 
         private int _numberWagons;
         private int _numberTicketsSold;
 
-        public void CreateDirection()
+        public void ToCreateDirection()
         {
             ShowMessage("Ведите куда следует поезд", ConsoleColor.Cyan);
             _startingPoint = Console.ReadLine();
@@ -90,35 +99,27 @@ namespace atrain
             _endPoint = Console.ReadLine();
         }
 
-        public int NumberPassengers()
-        {
-            Random random = new Random();
-
-            int maximumTicketsSold = 300;
-            int minimumTicketsSold = 20;
-
-            _numberTicketsSold = random.Next(minimumTicketsSold, maximumTicketsSold);
-      
-            return _numberTicketsSold;
-        }
-
-        public void PreparingTrainDeparture(out Train train)
+        public void ToPrepareTrain()
         {
             _numberWagons = CalculationNumberWagons();
 
-            train = new Train(_startingPoint, _endPoint, _numberWagons);
+            _trains.Add(new Train(_startingPoint, _endPoint, _numberWagons));
 
-            ShowMessage($"\n\n\nНаправление {_startingPoint}-{_endPoint}\nКоличество проданных билетов: {_numberTicketsSold} \nКоличество вагонов в поезде {_numberWagons}\n\n\n\nПоезд готов к отправке !!!", ConsoleColor.Green);
+            ShowMessage($"\n\n\nНаправление {_startingPoint}-{_endPoint}\nКоличество проданных билетов: {_numberTicketsSold} \nКоличество вагонов в поезде {_numberWagons}\n\nНомер  поезда [{_trains.LastOrDefault().TrainNumber}]\n\n\n\nПоезд готов к отправке !!!", ConsoleColor.Green);
         }
 
-        public void TrainDispatch(Train train)
+        public void ToSendTrain()
         {
-            if (_startingPoint != null && _endPoint != null && _numberWagons != 0)
+            if (_startingPoint != null && _endPoint != null && _numberWagons != 0 && _trains.Count != 0)
             {
-                train.StartMoving();
+                _trains.LastOrDefault().StartMoving();
+                _trains.Remove(_trains.Last());
+            }
+            else
+            {
+                ShowMessage("\nПоезд не готов к отправке\n", ConsoleColor.Red);
             }
 
-            ShowMessage("\nПоезд не готов к отправке\n", ConsoleColor.Red);
         }
 
         private void ShowMessage(string message, ConsoleColor color)
@@ -133,10 +134,22 @@ namespace atrain
 
         private int CalculationNumberWagons()
         {
-            int numberPassengers = NumberPassengers();
+            int numberPassengers = ToNumberPassengers();
             int maximumNumberSeatsCarriage = 20;
         
             return (int)Math.Ceiling((double)numberPassengers / maximumNumberSeatsCarriage);
+        }
+
+        private int ToNumberPassengers()
+        {
+            Random random = new Random();
+
+            int maximumTicketsSold = 300;
+            int minimumTicketsSold = 20;
+
+            _numberTicketsSold = random.Next(minimumTicketsSold, maximumTicketsSold);
+
+            return _numberTicketsSold;
         }
     }
 }
