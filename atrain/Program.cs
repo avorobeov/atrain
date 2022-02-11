@@ -11,7 +11,7 @@ namespace atrain
         static void Main(string[] args)
         {
             Dispatcher dispatcher = new Dispatcher();
-            Atrain atrain = null;
+            Train train = null;
 
             string userInput;
             bool isExit = false;
@@ -29,11 +29,11 @@ namespace atrain
                         break;
 
                     case "2":
-                        dispatcher.PreparingTrainDeparture(out atrain);
+                        dispatcher.PreparingTrainDeparture(out train);
                         break;
 
                     case "3":
-                        dispatcher.TrainDispatch(atrain);
+                        dispatcher.TrainDispatch(train);
                         break;
 
                     case "4":
@@ -52,7 +52,7 @@ namespace atrain
         }
     }
 
-    class Atrain
+    class Train
     {
         public string StartingPoint { get; private set; }
 
@@ -60,7 +60,7 @@ namespace atrain
 
         public int NumberWagons { get; private set; }
 
-        public Atrain(string startingPoint, string endPoint, int numberWagons)
+        public Train(string startingPoint, string endPoint, int numberWagons)
         {
             StartingPoint = startingPoint;
             EndPoint = endPoint;
@@ -102,16 +102,16 @@ namespace atrain
             return _numberTicketsSold;
         }
 
-        public void PreparingTrainDeparture(out Atrain atrain)
+        public void PreparingTrainDeparture(out Train train)
         {
             _numberWagons = CalculationNumberWagons();
 
-            atrain = new Atrain(_startingPoint, _endPoint, _numberWagons);
+            train = new Train(_startingPoint, _endPoint, _numberWagons);
 
             ShowMessage($"\n\n\nНаправление {_startingPoint}-{_endPoint}\nКоличество проданных билетов: {_numberTicketsSold} \nКоличество вагонов в поезде {_numberWagons}\n\n\n\nПоезд готов к отправке !!!", ConsoleColor.Green);
         }
 
-        public void TrainDispatch(Atrain atrain)
+        public void TrainDispatch(Train atrain)
         {
             if (_startingPoint != null && _endPoint != null && _numberWagons != 0)
             {
