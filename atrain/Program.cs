@@ -71,7 +71,7 @@ namespace atrain
             EndPoint = endPoint;
             NumberWagons = numberWagons;
 
-            TrainNumber = random.Next(0, maximumRandomNumber);
+            TrainNumber = random.Next(0, _maximumRandomNumber);
         }
 
         public void StartMoving()
