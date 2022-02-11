@@ -111,11 +111,11 @@ namespace atrain
             ShowMessage($"\n\n\nНаправление {_startingPoint}-{_endPoint}\nКоличество проданных билетов: {_numberTicketsSold} \nКоличество вагонов в поезде {_numberWagons}\n\n\n\nПоезд готов к отправке !!!", ConsoleColor.Green);
         }
 
-        public void TrainDispatch(Train atrain)
+        public void TrainDispatch(Train train)
         {
             if (_startingPoint != null && _endPoint != null && _numberWagons != 0)
             {
-                atrain.StartMoving();
+                train.StartMoving();
             }
 
             ShowMessage("\nПоезд не готов к отправке\n", ConsoleColor.Red);
