@@ -61,7 +61,7 @@ namespace atrain
 
         public int TrainNumber { get; private set; }
 
-        private int maximumRandomNumber = 100000;
+        private int _maximumRandomNumber = 100000;
 
         public Train(string startingPoint, string endPoint, int numberWagons)
         {
