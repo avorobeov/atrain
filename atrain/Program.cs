@@ -24,7 +24,7 @@ namespace atrain
                 switch (userInput)
                 {
                     case "1":
-                        dispatcher.CreateDirection();
+                        dispatcher.FormingTrain();
                         break;
 
                     case "2":
@@ -48,8 +48,6 @@ namespace atrain
 
     class Train
     {
-        private int _maximumRandomNumber = 100000;
-
         public string StartingPoint { get; private set; }
 
         public string EndPoint { get; private set; }
@@ -58,7 +56,7 @@ namespace atrain
 
         public int Number { get; private set; }
 
-        public Train(string startingPoint, string endPoint, int numberWagons)
+        public Train(string startingPoint, string endPoint, int numberWagons, int maximumRandomNumber = 100000)
         {
             Random random = new Random();
 
@@ -66,12 +64,12 @@ namespace atrain
             EndPoint = endPoint;
             NumberWagons = numberWagons;
 
-            Number = random.Next(0, _maximumRandomNumber);
+            Number = random.Next(0, maximumRandomNumber);
         }
 
         public void StartMoving()
         {
-            Console.WriteLine($"\nНомер  поезда [{TrainNumber}]\nПоезд начал движение", ConsoleColor.Red);
+            Console.WriteLine($"\nНомер  поезда [{Number}]\nПоезд начал движение", ConsoleColor.Red);
         }
     }
 
@@ -85,7 +83,7 @@ namespace atrain
         private int _numberWagons;
         private int _numberTicketsSold;
 
-        public void CreateDirection()
+        public void FormingTrain()
         {
             ShowMessage("Ведите куда следует поезд", ConsoleColor.Cyan);
             _startingPoint = Console.ReadLine();
@@ -97,7 +95,7 @@ namespace atrain
 
             _trains.Add(new Train(_startingPoint, _endPoint, _numberWagons));
 
-            ShowMessage($"\n\n\nНаправление {_startingPoint}-{_endPoint}\nКоличество проданных билетов: {_numberTicketsSold} \nКоличество вагонов в поезде {_numberWagons}\n\nНомер  поезда [{_trains.LastOrDefault().TrainNumber}]\n\n\n\nПоезд готов к отправке !!!", ConsoleColor.Green);
+            ShowMessage($"\n\n\nНаправление {_startingPoint}-{_endPoint}\nКоличество проданных билетов: {_numberTicketsSold} \nКоличество вагонов в поезде {_numberWagons}\n\nНомер  поезда [{_trains.LastOrDefault().Number}]\n\n\n\nПоезд готов к отправке !!!", ConsoleColor.Green);
         }
 
         public void SendTrain()
@@ -128,7 +126,8 @@ namespace atrain
         {
             int numberPassengers = ToNumberPassengers();
             int maximumNumberSeatsCarriage = 20;
-        
+
+            double h = numberPassengers % maximumNumberSeatsCarriage;
             return (int)Math.Ceiling((double)numberPassengers / maximumNumberSeatsCarriage);
         }
 
