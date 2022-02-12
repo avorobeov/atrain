@@ -24,18 +24,14 @@ namespace atrain
                 switch (userInput)
                 {
                     case "1":
-                        dispatcher.ToCreateDirection();
+                        dispatcher.CreateDirection();
                         break;
 
                     case "2":
-                        dispatcher.ToPrepareTrain();
+                        dispatcher.SendTrain();
                         break;
 
                     case "3":
-                        dispatcher.ToSendTrain();
-                        break;
-
-                    case "4":
                         isExit = true;
                         break;
                 }
@@ -44,24 +40,23 @@ namespace atrain
 
         static void ShowMenu()
         {
-            Console.WriteLine("\nСоздать направление нажмите 1\n" +
-                              "\nСформировать поезд 2\n" +
-                              "\nОтправить поезд 3\n" +
-                              "\nДля выхода нажмите 4\n");
+            Console.WriteLine("\nСформировать поезд 1\n" +
+                              "\nОтправить поезд 2\n" +
+                              "\nДля выхода нажмите 3\n");
         }
     }
 
     class Train
     {
+        private int _maximumRandomNumber = 100000;
+
         public string StartingPoint { get; private set; }
 
         public string EndPoint { get; private set; }
 
         public int NumberWagons { get; private set; }
 
-        public int TrainNumber { get; private set; }
-
-        private int _maximumRandomNumber = 100000;
+        public int Number { get; private set; }
 
         public Train(string startingPoint, string endPoint, int numberWagons)
         {
@@ -71,7 +66,7 @@ namespace atrain
             EndPoint = endPoint;
             NumberWagons = numberWagons;
 
-            TrainNumber = random.Next(0, _maximumRandomNumber);
+            Number = random.Next(0, _maximumRandomNumber);
         }
 
         public void StartMoving()
@@ -90,17 +85,14 @@ namespace atrain
         private int _numberWagons;
         private int _numberTicketsSold;
 
-        public void ToCreateDirection()
+        public void CreateDirection()
         {
             ShowMessage("Ведите куда следует поезд", ConsoleColor.Cyan);
             _startingPoint = Console.ReadLine();
 
             ShowMessage("Ведите от куда следует поезд", ConsoleColor.Cyan);
             _endPoint = Console.ReadLine();
-        }
 
-        public void ToPrepareTrain()
-        {
             _numberWagons = CalculationNumberWagons();
 
             _trains.Add(new Train(_startingPoint, _endPoint, _numberWagons));
@@ -108,12 +100,12 @@ namespace atrain
             ShowMessage($"\n\n\nНаправление {_startingPoint}-{_endPoint}\nКоличество проданных билетов: {_numberTicketsSold} \nКоличество вагонов в поезде {_numberWagons}\n\nНомер  поезда [{_trains.LastOrDefault().TrainNumber}]\n\n\n\nПоезд готов к отправке !!!", ConsoleColor.Green);
         }
 
-        public void ToSendTrain()
+        public void SendTrain()
         {
             if (_startingPoint != null && _endPoint != null && _numberWagons != 0 && _trains.Count != 0)
             {
-                _trains.LastOrDefault().StartMoving();
-                _trains.Remove(_trains.Last());
+                _trains[0].StartMoving();
+                _trains.RemoveAt(0);
             }
             else
             {
