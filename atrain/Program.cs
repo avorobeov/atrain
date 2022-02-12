@@ -131,7 +131,7 @@ namespace atrain
             return (int)Math.Ceiling((double)numberPassengers / maximumNumberSeatsCarriage);
         }
 
-        private int NumberPassengers()
+        private int GetNumberPassengers()
         {
             Random random = new Random();
 
