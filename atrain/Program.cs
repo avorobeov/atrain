@@ -124,7 +124,7 @@ namespace atrain
 
         private int CalculationNumberWagons()
         {
-            int numberPassengers = NumberPassengers();
+            int numberPassengers = GetNumberPassengers();
             int maximumNumberSeatsCarriage = 20;
 
             double h = numberPassengers % maximumNumberSeatsCarriage;
