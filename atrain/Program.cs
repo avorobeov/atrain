@@ -124,14 +124,14 @@ namespace atrain
 
         private int CalculationNumberWagons()
         {
-            int numberPassengers = ToNumberPassengers();
+            int numberPassengers = NumberPassengers();
             int maximumNumberSeatsCarriage = 20;
 
             double h = numberPassengers % maximumNumberSeatsCarriage;
             return (int)Math.Ceiling((double)numberPassengers / maximumNumberSeatsCarriage);
         }
 
-        private int ToNumberPassengers()
+        private int NumberPassengers()
         {
             Random random = new Random();
 
